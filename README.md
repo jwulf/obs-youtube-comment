@@ -2,6 +2,8 @@
 
 Display YouTube Comments in your OBS stream.
 
+Note: doesn't support emojis yet (see To Do at the bottom).
+
 ## To Use 
 
 ### OBS Setup
@@ -51,4 +53,9 @@ You should now see a userscript loaded on the Tampermonkey plugin.
 
 ## To Do
 
-Deal with emojis.
+Deal with emojis. Some leads: 
+
+    - [Using Emojis w/ OBS Text(FreeType 2)](https://www.reddit.com/r/obs/comments/7vn04l/using_emojis_w_obs_textfreetype_2/).
+    - The [text-pango](https://obsproject.com/forum/resources/text-pango-multi-language-and-emoji.656/) plugin. (Doesn't do word wrap).
+
+A heavier-weight solution would be to run a local process (or find or write a remote service) that renders the comment into a graphic, and then insert the composed graphic as a browser element source. That's a lot more work than the current solution, which is pretty light-weight.
