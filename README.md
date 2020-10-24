@@ -51,4 +51,4 @@ You should now see a userscript loaded on the Tampermonkey plugin.
 
 ## To Do
 
-Potentially, calculate the likely size of the comment based on the character count, and resize the text elements to accomodate.
+Deal with emojis.
