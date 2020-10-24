@@ -27,7 +27,7 @@ const obs = new OBSWebSocket();
 ; (async function () {
   "use strict";
 
-  GM_addStyle(".yt-live-chat-item-list-renderer:hover { background-color: blue }")
+  GM_addStyle("yt-live-chat-text-message-renderer:hover { background-color: blue }")
 
   createHideCommentButton()
 
@@ -57,64 +57,73 @@ const obs = new OBSWebSocket();
   // Create a hide button with onclick handler
 
   console.log(`Now connected to OBS`);
-  setInterval(() => {
-    // Get list of comments in page, using DOM selection
-    const comments = document.querySelectorAll('yt-live-chat-text-message-renderer')
-    // Add on click handler
-    comments.forEach(comment => {
-      // Don't reapply to comments that have already been modded in the DOM
-      if (comment.classList.contains(moddedClass)) {
-        return
-      }
-      comment.addEventListener('click', () => {
-        // Extract the comment from the DOM
-        const authorPhoto = comment.querySelector('#author-photo')
-        const authorPhotoUrl = authorPhoto.querySelector('#img').src
-        const content = comment.querySelector('#content')
-        const message = content.querySelector('#message').innerHTML
-        const authorChip = content.querySelector('yt-live-chat-author-chip')
-        const author = authorChip.querySelector('#author-name').textContent
-        console.log(`${author} - ${message} - ${authorPhotoUrl}`)
-        obs.send("SetSourceSettings", {
-          sourceName: commentTextSource,
-          sourceSettings: {
-            text: message
-          }
-        })
-        obs.send("SetSourceSettings", {
-          sourceName: commentAuthorSource,
-          sourceSettings: {
-            text: author
-          }
-        })
-        obs.send("SetSourceSettings", {
-          sourceName: commentPhotoSource,
-          sourceSettings: {
-            url: authorPhotoUrl
-          }
-        })
-        showComment()
-      })
-      // Add the modded class so we know we've already modified this one
-      comment.classList.add(moddedClass)
-    })
-  }, 1000);
 })();
 
-function hideComment() {
-  console.log('Hiding Comment in OBS')
+setInterval(() => {
+  // Get list of comments in page, using DOM selection
+  const comments = document.querySelectorAll('yt-live-chat-text-message-renderer')
+  // Add on click handler
+  comments.forEach(comment => {
+    // Don't reapply to comments that have already been modded in the DOM
+    if (comment.classList.contains(moddedClass)) {
+      return
+    }
+    comment.addEventListener('click', () => {
+      console.log('Clicked comment...')
+      // Extract the comment from the DOM
+      const authorPhoto = comment.querySelector('#author-photo')
+      const authorPhotoUrl = authorPhoto.querySelector('#img').src
+      const content = comment.querySelector('#content')
+      const message = content.querySelector('#message').innerHTML
+      const authorChip = content.querySelector('yt-live-chat-author-chip')
+      const author = authorChip.querySelector('#author-name').textContent
+      console.log(`${author} - ${message} - ${authorPhotoUrl}`)
+      obs.send("SetSourceSettings", {
+        sourceName: commentTextSource,
+        sourceSettings: {
+          text: message
+        }
+      })
+      obs.send("SetSourceSettings", {
+        sourceName: commentAuthorSource,
+        sourceSettings: {
+          text: author
+        }
+      })
+      obs.send("SetSourceSettings", {
+        sourceName: commentPhotoSource,
+        sourceSettings: {
+          url: authorPhotoUrl
+        }
+      })
+      showComment()
+    })
+    console.log('Added click handler...')
+    // Add the modded class so we know we've already modified this one
+    comment.classList.add(moddedClass)
+  })
+}, 1000);
+
+async function hideComment() {
+  const { name } = (await obs.send("GetCurrentScene"));
+  console.log(`Hiding Comment in OBS for scene ${name}`)
   sources.forEach(source => obs.send("SetSceneItemProperties", {
+    "scene-name": name,
     item: source,
     visible: false,
-  }))
+  }).catch(console.log))
+  obs.send("TransitionToProgram").catch(console.log)
 }
 
-function showComment() {
-  console.log('Showing Comment in OBS')
+async function showComment() {
+  const { name } = (await obs.send("GetCurrentScene"));
+  console.log(`Showing Comment in OBS for scene ${name}`)
   sources.forEach(source => obs.send("SetSceneItemProperties", {
+    "scene-name": name,
     item: source,
     visible: true,
-  }))
+  }).catch(console.log))
+  obs.send("TransitionToProgram").catch(console.log)
 }
 
 function createHideCommentButton() {

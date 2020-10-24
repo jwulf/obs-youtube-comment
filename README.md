@@ -17,7 +17,7 @@ Display YouTube Comments in your OBS stream.
     - `YTCommentAuthor` of type "Text (FreeType 2)" for the comment author.
     - `YTCommentPhoto` of type "Browser" for the comment author photo.
 
-* Position them where you want them.
+* Position and compose them where you want them.
 
 ### Browser Setup
 
@@ -49,3 +49,6 @@ You should now see a userscript loaded on the Tampermonkey plugin.
 
 * When you mouse over a comment, you will see the background turn blue. Click on the comment to send it to your OBS Stream.
 
+## To Do
+
+Potentially, calculate the likely size of the comment based on the character count, and resize the text elements to accomodate.
