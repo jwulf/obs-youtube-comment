@@ -17,7 +17,7 @@ Display YouTube Comments in your OBS stream.
     - `YTCommentAuthor` of type "Text (FreeType 2)" for the comment author.
     - `YTCommentPhoto` of type "Browser" for the comment author photo.
 
-* Position and compose them where you want them.
+* Position and compose them where you want them. You probably want to [enable word-wrapping, and set a custom width](https://lvacula.com/2020/05/obs-studios-word-wrapping-is-weird/).
 
 ### Browser Setup
 
