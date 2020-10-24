@@ -2,6 +2,8 @@
 
 Display YouTube Comments in your OBS stream.
 
+Uses the [OBS WebSocket plugin](https://github.com/Palakis/obs-websocket) and [Tampermonkey](https://www.tampermonkey.net/) browser plugin.
+
 Note: doesn't support emojis yet (see To Do at the bottom).
 
 ## To Use 
@@ -59,3 +61,7 @@ Deal with emojis. Some leads:
     - The [text-pango](https://obsproject.com/forum/resources/text-pango-multi-language-and-emoji.656/) plugin. (Doesn't do word wrap).
 
 A heavier-weight solution would be to run a local process (or find or write a remote service) that renders the comment into a graphic, and then insert the composed graphic as a browser element source. That's a lot more work than the current solution, which is pretty light-weight.
+
+## Resources
+
+- [OBS Websocket protocol](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md)
