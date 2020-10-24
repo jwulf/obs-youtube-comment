@@ -28,6 +28,8 @@ const moddedClass = "__obs__modded__"
 
     GM_addStyle(".yt-live-chat-item-list-renderer:hover { background-color: blue }")
 
+    createHideCommentButton()
+
     var cfg = new MonkeyConfig({
       title: "YouTube Comments OBS Connector Configuration",
       menuCommand: true,
