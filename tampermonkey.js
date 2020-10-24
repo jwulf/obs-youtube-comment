@@ -22,8 +22,9 @@ const commentAuthorSource = 'YTCommentAuthor'
 const sources = [commentTextSource, commentPhotoSource, commentAuthorSource]
 
 const moddedClass = "__obs__modded__";
+const obs = new OBSWebSocket();
 
-(async function () {
+; (async function () {
   "use strict";
 
   GM_addStyle(".yt-live-chat-item-list-renderer:hover { background-color: blue }")
@@ -47,8 +48,6 @@ const moddedClass = "__obs__modded__";
 
   const OBSWebSocketPluginPassword = cfg.get("OBSWebSocketPluginPassword");
   const OBSWebSocketPluginAddress = cfg.get("OBSWebSocketPluginAddress");
-
-  const obs = new OBSWebSocket();
 
   await obs.connect({
     address: OBSWebSocketPluginAddress,
