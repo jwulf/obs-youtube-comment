@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube Comment OBS Connector
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Display Youtube comments in your OBS stream
 // @author       Josh Wulf <josh@magikcraft.io>
 // @match        https://www.youtube.com/*
@@ -102,22 +102,20 @@ const moddedClass = "__obs__modded__";
   }, 1000);
 })();
 
-async function hideComment() {
+function hideComment() {
   console.log('Hiding Comment in OBS')
-  sources.forEach(source =>
-    await obs.send("SetSceneItemProperties", {
-      item: source,
-      visible: false,
-    }))
+  sources.forEach(source => obs.send("SetSceneItemProperties", {
+    item: source,
+    visible: false,
+  }))
 }
 
-async function showComment() {
+function showComment() {
   console.log('Showing Comment in OBS')
-  sources.forEach(source =>
-    await obs.send("SetSceneItemProperties", {
-      item: source,
-      visible: true,
-    }))
+  sources.forEach(source => obs.send("SetSceneItemProperties", {
+    item: source,
+    visible: true,
+  }))
 }
 
 function createHideCommentButton() {
