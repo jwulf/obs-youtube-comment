@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         Monstercat OBS Connector
+// @name         Youtube Comment OBS Connector
 // @namespace    http://tampermonkey.net/
-// @version      0.5
-// @description  Update a ticker in your OBS stream with the currently playing track from Monstercat.com
+// @version      0.1
+// @description  Display Youtube comments in your OBS stream
 // @author       Josh Wulf <josh@magikcraft.io>
-// @match        https://youtube.com/live_chat*
+// @match        https://youtube.com/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_addStyle
@@ -27,7 +27,7 @@ const moddedClass = "__obs__modded__"
     "use strict";
 
     GM_addStyle(".yt-live-chat-item-list-renderer:hover { background-color: blue }")
-  
+
     var cfg = new MonkeyConfig({
       title: "YouTube Comments OBS Connector Configuration",
       menuCommand: true,
@@ -101,6 +101,7 @@ const moddedClass = "__obs__modded__"
   })();
   
 async function hideComment() {
+    console.log('Hiding Comment in OBS')
     sources.forEach(source => 
     await obs.send("SetSceneItemProperties", {
         item: source,
@@ -109,9 +110,27 @@ async function hideComment() {
 }
 
 async function showComment() {
+    console.log('Showing Comment in OBS')
     sources.forEach(source => 
     await obs.send("SetSceneItemProperties", {
         item: source,
         visible: true,
       }))
+}
+
+function createHideCommentButton() {
+    const header = document.querySelector('yt-live-chat-header-renderer')
+    .querySelector('#primary-content')
+    const hideCommentButton = document.createElement('span')
+    hideCommentButton.id = 'obs-hide-comment'
+    hideCommentButton.classList.add('style-scope')
+    hideCommentButton.classList.add('yt-live-chat-header-renderer')
+    const button = document.createElement('button')
+    button.classList.add('style-scope')
+    button.classList.add('yt-live-chat-header-renderer')
+    button.id = 'obs-hide-comment-button'
+    button.innerHTML = 'Hide Comments in OBS'
+    button.addEventListener('click', hideComment)
+    hideCommentButton.appendChild(button)
+    header.appendChild(hideCommentButton)
 }
