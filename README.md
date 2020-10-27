@@ -55,12 +55,16 @@ You should now see a userscript loaded on the Tampermonkey plugin.
 
 ## To Do
 
-Deal with emojis. Some leads: 
+Deal with emojis. The text element does not and will not support emojis: 
 
     - [Reddit: Using Emojis w/ OBS Text(FreeType 2)](https://www.reddit.com/r/obs/comments/7vn04l/using_emojis_w_obs_textfreetype_2/) and the [OBS GitHub issue](https://github.com/obsproject/obs-studio/issues/3127).
     - The [text-pango](https://obsproject.com/forum/resources/text-pango-multi-language-and-emoji.656/) plugin. (Doesn't do word wrap).
 
-A heavier-weight solution would be to run a local process (or find or write a remote service) that renders the comment into a graphic, and then insert the composed graphic as a browser element source. That's a lot more work than the current solution, which is pretty light-weight.
+Another solutionis to render the comment as HTML, and use a browser element source, using the same approach taken by [this OBS Clock element](https://gist.github.com/sam0737/a0ee8ca253fc5c84b2aa2ac018f7b8ad#file-clock-html).
+
+There is work in progress on this in [comment.html]. Preview available [here](https://jwulf.github.io/obs-youtube-comment/comment.html?comment-text=Some%20random%20comment%F0%9F%94%A5&author-photo=https%3A%2F%2Fyt3.ggpht.com%2F-S3bsaaqv62A%2FAAAAAAAAAAI%2FAAAAAAAAAAA%2FXR526h_hdzk%2Fs32-c-k-no-mo-rj-c0xffffff%2Fphoto.jpg&author-name=TJump%27s%20couch).
+
+It is served via GitHub pages, and uses URL parameters to set the content. The websocket should modify the browser source to point to this page with the data passed as URI encoded parameters.
 
 ## Resources
 
