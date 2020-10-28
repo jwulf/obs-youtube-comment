@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube Comment OBS Connector
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Display Youtube comments in your OBS stream
 // @author       Josh Wulf <josh@magikcraft.io>
 // @match        https://www.youtube.com/*
@@ -13,13 +13,11 @@
 // @require       https://raw.githubusercontent.com/jwulf/monstercat-obs-connector/master/OBSWebsocket.min.js
 // ==/UserScript==
 
+/* declare OBSWebSocket:false, MonkeyConfig:false */
+
 // Massive shout-out to Brendan Hagan for the OBS web socket!
 
-const commentTextSource = 'YTCommentText'
-const commentPhotoSource = 'YTCommentPhoto'
-const commentAuthorSource = 'YTCommentAuthor'
-
-const sources = [commentTextSource, commentPhotoSource, commentAuthorSource]
+const YTCommentBoxSource = 'YTCommentBox'
 
 const moddedClass = "__obs__modded__";
 const obs = new OBSWebSocket();
@@ -78,24 +76,15 @@ setInterval(() => {
       const authorChip = content.querySelector('yt-live-chat-author-chip')
       const author = authorChip.querySelector('#author-name').textContent
       console.log(`${author} - ${message} - ${authorPhotoUrl}`)
+
+      const baseUrl = 'https://jwulf.github.io/obs-youtube-comment/comment.html'
+      const url = `${baseUrl}?comment-text=${encodeURIComponent(message)}&author-photo=${encodeURIComponent(authorPhotoUrl)}&author-name=${encodeURIComponent(author)}`
       obs.send("SetSourceSettings", {
-        sourceName: commentTextSource,
+        sourceName: "YTCommentBox",
         sourceSettings: {
-          text: message
-        }
-      })
-      obs.send("SetSourceSettings", {
-        sourceName: commentAuthorSource,
-        sourceSettings: {
-          text: author
-        }
-      })
-      obs.send("SetSourceSettings", {
-        sourceName: commentPhotoSource,
-        sourceSettings: {
-          url: authorPhotoUrl
-        }
-      })
+          url
+        },
+      }).catch(console.log)
       showComment()
     })
     console.log('Added click handler...')
@@ -107,22 +96,22 @@ setInterval(() => {
 async function hideComment() {
   const { name } = (await obs.send("GetCurrentScene"));
   console.log(`Hiding Comment in OBS for scene ${name}`)
-  sources.forEach(source => obs.send("SetSceneItemProperties", {
+  obs.send("SetSceneItemProperties", {
     "scene-name": name,
-    item: source,
+    item: YTCommentBoxSource,
     visible: false,
-  }).catch(console.log))
+  }).catch(console.log)
   obs.send("TransitionToProgram").catch(console.log)
 }
 
 async function showComment() {
   const { name } = (await obs.send("GetCurrentScene"));
   console.log(`Showing Comment in OBS for scene ${name}`)
-  sources.forEach(source => obs.send("SetSceneItemProperties", {
+  obs.send("SetSceneItemProperties", {
     "scene-name": name,
-    item: source,
+    item: YTCommentBoxSource,
     visible: true,
-  }).catch(console.log))
+  }).catch(console.log)
   obs.send("TransitionToProgram").catch(console.log)
 }
 
