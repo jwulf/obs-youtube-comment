@@ -52,8 +52,6 @@ const obs = new OBSWebSocket();
     password: OBSWebSocketPluginPassword
   });
 
-  // Create a hide button with onclick handler
-
   console.log(`Now connected to OBS`);
 })();
 
