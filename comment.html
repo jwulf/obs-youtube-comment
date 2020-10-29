@@ -6,7 +6,7 @@
     <style>
       #comment {
         display: flex;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.8);
         border-radius: 3.5rem 5px 5px 3.5rem;
         padding: 0.5rem;
         width: 95%;
@@ -30,7 +30,7 @@
         color: #13de9b;
       }
       #comment-text img {
-        display: inline!important;
+        display: inline !important;
         max-height: 1.125em;
         margin: 0;
       }
@@ -47,6 +47,7 @@
         <div id="comment-text"></div>
       </div>
     </div>
+    <div id="DOM"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script>
@@ -74,6 +75,8 @@
       var comment = document.getElementById("comment-text");
       if (urlParams["comment-text"])
         comment.innerHTML = urlParams["comment-text"];
+      // @DEBUG
+      document.getElementById("DOM").innerHTML = document.innerHTML;
     </script>
   </body>
 </html>
